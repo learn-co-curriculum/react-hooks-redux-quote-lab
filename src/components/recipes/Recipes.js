@@ -5,7 +5,7 @@ export class Recipes extends Component {
     return(
         <div>
           <ul>
-            Recipes
+            
           </ul>
         </div>
     )

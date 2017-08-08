@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 export class AddIngredient extends Component {
   render(){
     return(
-      <div>
-        Ok
-      </div>
+      <li> {this.props.ingredient.name} </li>
     )
   }
 }

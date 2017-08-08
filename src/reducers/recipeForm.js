@@ -1,3 +1,3 @@
-export default function recipeForm(state = 'not ok', action){
+export default function recipeForm(state = {ingredientIds: []}, action){
   return state;
 }
