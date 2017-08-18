@@ -5,7 +5,7 @@ export default (state = [], action) => {
       return state.concat(action.ingredient);
 
     case 'REMOVE_INGREDIENT':
-      return state.filter(ingredient => ingredient.id != action.id);
+      return state.filter(ingredient => ingredient.id !== action.id);
 
     default: 
       return state;
