@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import IngredientsForm from './IngredientsForm';
 
 class RecipeForm extends Component {
 
@@ -19,12 +20,15 @@ class RecipeForm extends Component {
 
   render() {
     return (
-      <form>
-        <input 
-          name="name"
-          onChange={this.handleOnChange}
-        />
-      </form>
+      <div>
+        <form>
+          <input 
+            name="name"
+            onChange={this.handleOnChange}
+          />
+        </form>
+        <IngredientsForm />
+      </div>
     );
   }
 }
