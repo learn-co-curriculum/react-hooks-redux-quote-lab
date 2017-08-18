@@ -5,7 +5,6 @@
   "devDependencies": {
     "jsdom": "^9.9.1",
     "mocha": "^3.2.0",
-    "react-addons-test-utils": "^15.4.2",
     "react-scripts": "0.8.5",
     "webpack": "^1.14.0",
     "webpack-dev-server": "^1.16.2"
@@ -18,14 +17,14 @@
     "babel-preset-react": "^6.22.0",
     "babel-preset-stage-0": "^6.22.0",
     "chai": "^3.5.0",
-    "enzyme": "^2.7.0",
+    "enzyme": "^2.9.1",
     "expect": "^1.20.2",
-    "react": "^15.5.4",
-    "react-addons-test-utils": "^15.4.2",
-    "react-dom": "^15.5.4",
+    "react": "^15.6.1",
+    "react-addons-test-utils": "^15.6.0",
+    "react-dom": "^15.6.1",
     "react-redux": "^5.0.2",
-    "react-router": "^3.0.2",
-    "redux": "^3.6.0",
+    "react-test-renderer": "^15.6.1",
+    "redux": "^3.7.2",
     "sinon": "^1.17.7",
     "uuid": "^3.0.1"
   },
