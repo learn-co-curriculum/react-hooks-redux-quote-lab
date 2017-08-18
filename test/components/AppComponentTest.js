@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import App from '../src/App';
-import Recipes from '../src/containers/Recipes';
-import RecipeForm from '../src/containers/RecipeForm';
+import App from '../../src/App';
+import Recipes from '../../src/containers/Recipes';
+import RecipeForm from '../../src/containers/RecipeForm';
 
 describe('App Component', () => {
   let wrapper;

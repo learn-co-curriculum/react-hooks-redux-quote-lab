@@ -31,7 +31,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "mocha -w test/helpers.js test/*.js",
+    "test": "mocha -w test/helpers.js test/**/**.js",
     "dev:hot": "webpack-dev-server --hot --inline --progress --colors --watch --display-error-details --display-cached --content-base ./",
     "test:watch": "npm run test -- --watch",
     "eject": "react-scripts eject"

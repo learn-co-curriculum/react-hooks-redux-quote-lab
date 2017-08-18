@@ -1,6 +1,6 @@
 import uuid from 'uuid';
-import reducer from '../src/reducers/ingredients';
 import { expect } from 'chai';
+import reducer from '../../src/reducers/ingredients';
 
 describe('Ingredients Reducer', () => {
 
