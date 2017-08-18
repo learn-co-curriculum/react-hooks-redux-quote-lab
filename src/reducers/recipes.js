@@ -5,12 +5,12 @@ export default (state = [], action) => {
       return state.concat(action.recipe);
 
     case 'REMOVE_RECIPE':
-      return state.filter(recipe => recipe.id != action.id);
+      return state.filter(recipe => recipe.id !== action.id);
 
     case 'REMOVE_INGREDIENT':
       return state.map(recipe => {
         return Object.assign({}, recipe, {
-          ingredientIds: recipe.ingredientIds.filter(id => id != action.id)
+          ingredientIds: recipe.ingredientIds.filter(id => id !== action.id)
         });
       });
       
