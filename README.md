@@ -6,56 +6,53 @@ Use the react-redux library and the redux library to build an application with m
 
 ## Overview
 
-In this lab we will be building an application for creating recipes. This will include creating a from for a new recipe with nested attributes for ingredients. 
+In this lab we will be building an application for making quotes. This will include creating a quote and updating the global Redux state. 
 
-In our `App` component we will render the components: `RecipeForm` & `Recipes`. We will also need a reducer for Recipes and Ingredients.
+In our `App` component we will render the components: `QuoteForm` & `Quotes`. We will also need a reducer and actions file for our Quotes.
 
-### RecipeForm Component 
+### Quotes Reducer 
 
-Our Recipe form will have an input for a name and buttons for each available ingredient. When you click on the ingredient button it will associate that ingredient id to an array of ingredient ids within our recipe form data. i.e. `{ name: 'cookies', ingredientIds: [1,2,3] }`
-
-### Recipes Component
-
-The Recipes Component will render a list of individual recipes and their given ingredients. 
-
-### Recipes Reducer 
-
-The recipes reducer should have an initial state of:
+The quotes reducer should have an initial state of:
 
 ```javascript 
 []
 ```
 
-But when a Recipe is added it should look like.
+But when a Quote is added it should look like. (We will be using the `uuid` node package for generating ids)
 
 ```javascript 
 [
   {
-    id: 1,
-    name: 'cookies',
-    ingredientIds: [1,2,3]
+    id: '23423424242-42342423424242-fafdb',
+    content: 'One Awesome Quote',
+    author: 'Luke Ghenco'
   }
 ]
 ```
 
-### Ingredients Reducer
+We will also need to extend out the Quotes Reducer to handle removing quotes, upvoting quotes, and downvoting quotes as well. Check out the test specs for how to build these.
 
-The ingredients reducer should also have an initial state of: 
+### Quotes Actions 
 
-```javascript
-[]
-```
+Build out several actions as specified in the tests that build Action Creators for add, removing, upvoting and downvoting quotes.
 
-But when an Ingredient is added it should look like.
+### QuoteForm Component 
 
-```javascript 
-[
-  {
-    id: 1
-    name: Flour
-  }
-]
-```
+Our Quote form will have a textarea for a quotes content and an input for a quotes author. We will be using component state for updating the inputs so make sure to have a state of `{ content: '', author: '' }` in your `QuoteForm` constructor. You will make a dispatch action to Redux using an action you will create called `addQuote()` that will take a quote as an argument and start the reducer process.
+
+### Quotes Component
+
+The `Quotes` Component will render a list of individual `QuoteCard` components. It needs to be connected to the `Redux` state so that it can render the quotes. Also make sure to attach the remove, upvote, and downvote actions from the Quotes Actions file to pass down as callback props to the `QuoteCard` component. 
+
+### QuoteCard Component
+
+Make sure to connect the callback action props to the the Upvote, Downvote and Delete buttons.
+
+#### Example App
+
+Here is an image of the example app, of what you are trying to build. 
+
+![](https://s3-us-west-2.amazonaws.com/curriculum-content/web-development/react/quote-app-image.png)
 
 #### Note 
 
@@ -67,9 +64,6 @@ import uuid from 'uuid';
 const id = uuid();
 console.log(id) // '1fd3234'
 ```
-
-#### Example App
-![](https://s3-us-west-2.amazonaws.com/curriculum-content/web-development/react/quote-app-image.png)
 
 <p class='util--hide'>View <a href='https://learn.co/lessons/cooking-with-redux'>Cooking With Redux</a> on Learn.co and start learning to code for free.</p>
 
