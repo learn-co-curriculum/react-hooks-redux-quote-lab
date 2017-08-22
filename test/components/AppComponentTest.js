@@ -1,36 +1,47 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { expect } from 'chai';
+import { Provider } from 'react-redux';
 import App from '../../src/App';
-import Recipes from '../../src/containers/Recipes';
-import RecipeForm from '../../src/containers/RecipeForm';
+import Quotes from '../../src/containers/Quotes';
+import QuoteForm from '../../src/containers/QuoteForm';
+import { store } from '../../src/store';
 
 describe('App Component', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<App />);
+    wrapper = mount(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
   });
 
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<App />, div);
+    ReactDOM.render(
+      <Provider store={store}>
+        <App />
+      </Provider>, 
+      div
+    );
   });
 
-  it('always renders an h1 tag with "Cooking With Redux"', () => {
+  it('always renders an h1 tag with "Quote Maker"', () => {
     const headerTags = wrapper.find('h1');
 
     expect(headerTags.length).to.equal(1);
-    expect(headerTags.text()).to.equal('Cooking With Redux', 'H1 Tag text does not match');
+    expect(headerTags.text()).to.equal('Quote Maker', 'H1 Tag text does not match');
   });
 
-  it('always renders a `RecipeForm` component', () => {
-    expect(wrapper.find(RecipeForm).length).to.equal(1, 'Missing a RecipeForm Component');
+  it('always renders a `QuoteForm` component', () => {
+    expect(wrapper.find(QuoteForm).length).to.equal(1, 'Missing a QuoteForm Component');
   });
 
-  it('always renders a `Recipes` components', () => {
-    expect(wrapper.find(Recipes).length).to.equal(1, 'Missing a Recipes Component');
+  it('always renders a `Quotes` components', () => {
+    expect(wrapper.find(Quotes).length).to.equal(1, 'Missing a Quotes Component');
   });
 });
 

@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
-import ingredients from './ingredients';
-import recipes from './recipes';
+import quotes from './quotes';
 
 export default combineReducers({
-  ingredients, 
-  recipes
+  quotes,
 });

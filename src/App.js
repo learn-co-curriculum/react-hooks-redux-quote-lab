@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import RecipeForm from './containers/RecipeForm';
-import Recipes from './containers/Recipes';
+import QuoteForm from './containers/QuoteForm';
+import Quotes from './containers/Quotes';
 
 export class App extends Component {
   render() {
     return (
       <div>
-        <h1>Cooking With Redux</h1>
-        <RecipeForm />
-        <Recipes />
+        <h1>Quote Maker</h1>
+        <QuoteForm />
+        <Quotes />
       </div>
     );
   }
