@@ -9,8 +9,18 @@ class Quotes extends Component {
     const { quotes, removeQuote, upvoteQuote, downvoteQuote } = this.props;
     return (
       <div>
-        <h2>Quotes</h2>
-        {quotes.map(quote => <QuoteCard key={quote.id} upvoteQuote={upvoteQuote} downvoteQuote={downvoteQuote} removeQuote={removeQuote} quote={quote} />)}
+        <hr />
+        <div className="row justify-content-center">
+          <h2>Quotes</h2>
+        </div>
+        <hr />
+        <div className="container">
+          <div className="row">
+            <div className="col-md-4">
+              {quotes.map(quote => <QuoteCard key={quote.id} upvoteQuote={upvoteQuote} downvoteQuote={downvoteQuote} removeQuote={removeQuote} quote={quote} />)}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

@@ -1,9 +1,7 @@
-import uuid from 'uuid';
-
 export const addQuote = quote => {
   return {
     type: 'ADD_QUOTE',
-    quote: Object.assign({}, quote, { id: uuid(), votes: 0 })
+    quote: Object.assign({}, quote, { votes: 0 })
   }
 }
 
