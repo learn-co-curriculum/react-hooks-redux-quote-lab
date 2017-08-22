@@ -68,13 +68,9 @@ const id = uuid();
 console.log(id) // '1fd3234'
 ```
 
+#### Example App
+![](https://s3-us-west-2.amazonaws.com/curriculum-content/web-development/react/quote-app-image.png)
+
 <p class='util--hide'>View <a href='https://learn.co/lessons/cooking-with-redux'>Cooking With Redux</a> on Learn.co and start learning to code for free.</p>
 
-
-# Quote 
-
-content: Text 
-author: { name: '' }
-
-Very basic nested form {}
 
