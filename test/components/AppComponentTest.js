@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { shallow, mount } from 'enzyme';
+import { configure, shallow, mount } from 'enzyme';
 import { expect } from 'chai';
 import { Provider } from 'react-redux';
 import App from '../../src/App';
 import Quotes from '../../src/containers/Quotes';
 import QuoteForm from '../../src/containers/QuoteForm';
 import { store } from '../../src/store';
+import Adapter from 'enzyme-adapter-react-16'
+
+configure({ adapter: new Adapter() })
 
 describe('App Component', () => {
   let wrapper;
@@ -24,7 +27,7 @@ describe('App Component', () => {
     ReactDOM.render(
       <Provider store={store}>
         <App />
-      </Provider>, 
+      </Provider>,
       div
     );
   });
@@ -44,4 +47,3 @@ describe('App Component', () => {
     expect(wrapper.find(Quotes).length).to.equal(1, 'Missing a Quotes Component');
   });
 });
-

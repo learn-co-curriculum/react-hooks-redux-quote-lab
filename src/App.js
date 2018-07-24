@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export class App extends Component {
+class App extends Component {
   render() {
     return (
       <div className="container-fluid">
@@ -8,8 +8,8 @@ export class App extends Component {
           <h1>Quote Maker</h1>
         </div>
         <hr />
-        {/* 
-          TODO: 
+        {/*
+          TODO:
 
           Render QuoteForm and Quotes Components
          */}

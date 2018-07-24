@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { shallow } from 'enzyme';
+import { configure, shallow } from 'enzyme';
 import chai, { expect } from 'chai';
 import spies from 'chai-spies';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { QuoteForm } from '../../src/containers/QuoteForm';
 import ConnectedQuoteForm from '../../src/containers/QuoteForm';
+import Adapter from 'enzyme-adapter-react-16'
+
+configure({ adapter: new Adapter() })
 
 describe('QuoteForm Component', () => {
   const mockStore = configureStore([]);
@@ -25,7 +28,7 @@ describe('QuoteForm Component', () => {
     ReactDOM.render(
       <Provider store={store}>
         <ConnectedQuoteForm />
-      </Provider>, 
+      </Provider>,
       div
     );
   });
@@ -61,7 +64,7 @@ describe('QuoteForm Component', () => {
     wrapper.find('textarea[name="content"]').simulate('change', { target: { name: 'content', value: 'test content' }})
 
     expect(wrapper.state()).to.deep.equal({
-      content: 'test content', 
+      content: 'test content',
       author: 'test author'
     });
   });
@@ -81,18 +84,18 @@ describe('QuoteForm Component', () => {
 
     wrapper.find('input[name="author"]').simulate('change', { target: { name: 'author', value: 'test author' }});
     wrapper.find('textarea[name="content"]').simulate('change', { target: { name: 'content', value: 'test content' }})
-    
+
     expect(wrapper.state()).to.deep.equal({
-      content: 'test content', 
+      content: 'test content',
       author: 'test author'
     });
 
     wrapper.find('form').simulate('submit', { preventDefault });
 
-    expect(wrapper.state()).to.deep.equal({ 
+    expect(wrapper.state()).to.deep.equal({
       content: '',
       author: ''
-    });  
+    });
   });
 
   it('should call addQuote prop on handleOnSubmit', () => {
@@ -104,4 +107,3 @@ describe('QuoteForm Component', () => {
     expect(addQuoteSpy, "Expected this.props.addQuote to have been called").to.have.been.called();
   })
 });
-

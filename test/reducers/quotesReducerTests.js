@@ -2,6 +2,7 @@ import uuid from 'uuid';
 import { expect } from 'chai';
 import reducer from '../../src/reducers/quotes';
 
+
 describe('Quotes Reducer', () => {
 
   it('should return the initial state', () => {
@@ -63,9 +64,9 @@ describe('Quotes Reducer', () => {
       }
     ];
 
-    expect(reducer(initialState, { 
-      type: 'UPVOTE_QUOTE', 
-      quoteId: firstId 
+    expect(reducer(initialState, {
+      type: 'UPVOTE_QUOTE',
+      quoteId: firstId
     })).to.deep.equal(
       [
         {
@@ -89,9 +90,9 @@ describe('Quotes Reducer', () => {
       }
     ];
 
-    expect(reducer(initialState, { 
-      type: 'DOWNVOTE_QUOTE', 
-      quoteId: firstId 
+    expect(reducer(initialState, {
+      type: 'DOWNVOTE_QUOTE',
+      quoteId: firstId
     })).to.deep.equal(
       [
         {
@@ -115,9 +116,9 @@ describe('Quotes Reducer', () => {
       }
     ];
 
-    expect(reducer(initialState, { 
-      type: 'DOWNVOTE_QUOTE', 
-      quoteId: firstId 
+    expect(reducer(initialState, {
+      type: 'DOWNVOTE_QUOTE',
+      quoteId: firstId
     })).to.deep.equal(
       [
         {
