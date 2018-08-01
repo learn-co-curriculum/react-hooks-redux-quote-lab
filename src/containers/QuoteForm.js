@@ -3,7 +3,8 @@ import uuid from 'uuid';
 import { connect } from 'react-redux';
 import { addQuote } from '../actions/quotes';
 
-class QuoteForm extends Component {
+//extra export here for testing purposes
+export class QuoteForm extends Component {
 
   constructor(props) {
     super(props)
