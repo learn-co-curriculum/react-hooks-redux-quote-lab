@@ -3,15 +3,12 @@ import uuid from 'uuid';
 import { connect } from 'react-redux';
 import { addQuote } from '../actions/quotes';
 
-//extra export here for testing purposes
-export class QuoteForm extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      content: '',
-      author: ''
-    }
+class QuoteForm extends Component {
+
+  state = {
+    content: '',
+    author: ''
   }
 
   handleOnChange = event => {
@@ -23,7 +20,7 @@ export class QuoteForm extends Component {
 
   handleOnSubmit = event => {
     event.preventDefault();
-    const quote = Object.assign({}, this.state, { id: uuid() });
+    const quote = {...this.state, id: uuid() };
     this.props.addQuote(quote);
     this.setState({
       content: '',

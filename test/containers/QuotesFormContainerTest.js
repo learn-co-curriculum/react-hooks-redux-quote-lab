@@ -1,46 +1,55 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { configure, shallow } from 'enzyme';
+import { mount, configure, shallow } from 'enzyme';
 import chai, { expect } from 'chai';
 import spies from 'chai-spies';
 import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
-import { QuoteForm } from '../../src/containers/QuoteForm';
-import ConnectedQuoteForm from '../../src/containers/QuoteForm';
+import { createStore } from 'redux'
+import rootReducer from '../../src/reducers/index'
+import App from '../../src/App';
+import QuoteForm from '../../src/containers/QuoteForm';
+
 import Adapter from 'enzyme-adapter-react-16'
 
 configure({ adapter: new Adapter() })
 
 describe('QuoteForm Component', () => {
-  const mockStore = configureStore([]);
   const initialState = { ingredients: [] };
-  const store = mockStore(initialState);
+
   const addQuote = (recipe) => 'noop';
   let wrapper;
+  let store;
   chai.use(spies);
 
-  beforeEach(() => {
-    wrapper = shallow(<QuoteForm addQuote={addQuote} />);
-  });
+
 
   it('renders without crashing', () => {
     const div = document.createElement('div');
+    store = createStore(rootReducer)
+    store.dispatch({type: 'ADD_QUOTE', quote: {content: '', author: '', id: 1} })
     ReactDOM.render(
       <Provider store={store}>
-        <ConnectedQuoteForm />
+        <App />
       </Provider>,
       div
     );
   });
-
-  it('has a default state', () => {
-    expect(wrapper.state()).to.deep.equal({
-      content: '',
-      author: ''
-    });
-  });
+  //
+  // it('has a default state', () => {
+  //   store = createStore(rootReducer)
+  //   wrapper = mount(<Provider store={store}><App /></Provider>);
+  //
+  //   console.log('hi');
+  //
+  //   expect(swrapper.state()).to.deep.equal({
+  //     content: '',
+  //     author: ''
+  //   });
+  // });
 
   it('always renders a form tag', () => {
+    store = createStore(rootReducer)
+    wrapper = mount(<Provider store={store}><QuoteForm addQuote={addQuote} /></Provider>);
     const form = wrapper.find('form');
 
     expect(form.length).to.equal(1, 'QuoteForm must contain a <form> tag');
@@ -58,15 +67,16 @@ describe('QuoteForm Component', () => {
     expect(input.length).to.equal(1, 'QuoteForm must contain one <input name="author" /> tag');
   });
 
-  it('should pass a new value to state using the handleOnChange function', () => {
+  it('should control its inputs based on internal state', () => {
+    store = createStore(rootReducer)
+    wrapper = mount(<Provider store={store}><App /></Provider>);
 
     wrapper.find('input[name="author"]').simulate('change', { target: { name: 'author', value: 'test author' }});
     wrapper.find('textarea[name="content"]').simulate('change', { target: { name: 'content', value: 'test content' }})
 
-    expect(wrapper.state()).to.deep.equal({
-      content: 'test content',
-      author: 'test author'
-    });
+    expect(wrapper.find('input[name="author"]').html()).to.include('value="test author"');
+    expect(wrapper.find('textarea[name="content"]').html()).to.include('test content');
+
   });
 
   it('should handleOnSubmit and preventDefault()', () => {
@@ -85,25 +95,35 @@ describe('QuoteForm Component', () => {
     wrapper.find('input[name="author"]').simulate('change', { target: { name: 'author', value: 'test author' }});
     wrapper.find('textarea[name="content"]').simulate('change', { target: { name: 'content', value: 'test content' }})
 
-    expect(wrapper.state()).to.deep.equal({
-      content: 'test content',
-      author: 'test author'
-    });
+    expect(wrapper.find('input[name="author"]').html()).to.include('value="test author"');
+    expect(wrapper.find('textarea[name="content"]').html()).to.include('test content');
+
 
     wrapper.find('form').simulate('submit', { preventDefault });
 
-    expect(wrapper.state()).to.deep.equal({
-      content: '',
-      author: ''
-    });
+    expect(wrapper.find('input[name="author"]').html()).to.include('value=""');
+    expect(wrapper.find('textarea[name="content"]').html()).to.not.include('test content');
+
+
   });
 
-  it('should call addQuote prop on handleOnSubmit', () => {
-    const preventDefault = chai.spy(function() {});
-    const addQuoteSpy = chai.spy(addQuote);
-    const wrapperWithProps = shallow(<QuoteForm addQuote={addQuoteSpy} />)
+  it('should modify the store on handleOnSubmit', () => {
+    store = createStore(rootReducer)
+    wrapper = mount(<Provider store={store}><App /></Provider>);
 
-    wrapperWithProps.find('form').simulate('submit', { preventDefault });
-    expect(addQuoteSpy, "Expected this.props.addQuote to have been called").to.have.been.called();
+    expect(store.getState().quotes.length).to.equal(0);
+
+    wrapper.find('input[name="author"]').simulate('change', { target: { name: 'author', value: 'test author' }});
+    wrapper.find('textarea[name="content"]').simulate('change', { target: { name: 'content', value: 'test content' }})
+
+    expect(wrapper.find('input[name="author"]').html()).to.include('value="test author"');
+    expect(wrapper.find('textarea[name="content"]').html()).to.include('test content');
+
+    wrapper.find('form').simulate('submit', { preventDefault() {} });
+
+    expect(store.getState().quotes.length).to.equal(1);
+    expect(store.getState().quotes[0].author).to.equal('test author')
+    expect(store.getState().quotes[0].content).to.equal('test content')
+
   })
 });
