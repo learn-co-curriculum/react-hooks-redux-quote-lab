@@ -21,8 +21,8 @@ The quotes reducer should have an initial state of:
 []
 ```
 
-But when a Quote is added it should look like. (We will be using the `uuid` node
-package for generating ids)
+But when a Quote is added it should look like this 
+(we will be using the uuid node package for generating ids):
 
 ```javascript
 [
