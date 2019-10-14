@@ -2,8 +2,8 @@
 
 ## Objectives
 
-Use the react-redux library and the redux library to build an application with
-multiple resources.
+- Use the react-redux library and the redux library to build an application with
+  multiple resources.
 
 ## Overview
 
@@ -21,7 +21,7 @@ The quotes reducer should have an initial state of:
 []
 ```
 
-But when a Quote is added it should look like this 
+But when a Quote is added it should look like this
 (we will be using the uuid node package for generating ids):
 
 ```javascript
@@ -42,7 +42,7 @@ to build these.
 
 Build out several actions as specified in the tests that build Action Creators
 for add, removing, upvoting and downvoting quotes.
-    
+
 ### QuoteForm Component
 
 Our Quote form will have a textarea for a quotes content and an input for a
@@ -68,7 +68,7 @@ Delete buttons.
 
 Here is an image of the example app, of what you are trying to build.
 
-![](https://s3-us-west-2.amazonaws.com/curriculum-content/web-development/react/quote-app-image.png)
+![quote app example](https://s3-us-west-2.amazonaws.com/curriculum-content/web-development/react/quote-app-image.png)
 
 #### Note
 
