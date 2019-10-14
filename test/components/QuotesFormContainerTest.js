@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux'
 import rootReducer from '../../src/reducers/index'
 import App from '../../src/App';
-import QuoteForm from '../../src/containers/QuoteForm';
+import QuoteForm from '../../src/components/QuoteForm';
 
 import Adapter from 'enzyme-adapter-react-16'
 
