@@ -1,6 +1,16 @@
 import uuid from 'uuid';
 import { expect } from 'chai';
 import reducer from '../../src/reducers/quotes';
+import React from 'react';
+import { configure, shallow, mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import App from '../../src/App';
+import { createStore } from 'redux'
+import rootReducer from '../../src/reducers/index'
+import Adapter from 'enzyme-adapter-react-16'
+import QuoteCard from '../../src/components/QuoteCard';
+
+configure({ adapter: new Adapter() })
 
 
 describe('Quotes Reducer', () => {
@@ -131,3 +141,41 @@ describe('Quotes Reducer', () => {
     );
   });
 });
+
+describe("QuoteCard (Revisited)", () => {
+  let store;
+  let wrapper;
+  
+  it("calls upvoteQuote action creator and updates the quote's vote count in the Redux store", () => {
+    const div = document.createElement('div');
+    store = createStore(rootReducer)
+    store.dispatch({type: 'ADD_QUOTE', quote: {content: 'As you wish', author: 'Wesley', votes: 999, id: 1} })
+    wrapper = mount(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+
+    let button = wrapper.find(QuoteCard).findWhere(n => n.html() === '<button type="button" class="btn btn-primary">Upvote</button>')
+    button.simulate('click')
+    expect(store.getState().quotes.length).to.equal(1);
+    expect(store.getState().quotes[0].votes).to.be.oneOf([1000,'1000']);
+  })
+
+  it("calls downvoteQuote action creator and updates the quote's vote count in the Redux store", () => {
+    const div = document.createElement('div');
+    store = createStore(rootReducer)
+    store.dispatch({type: 'ADD_QUOTE', quote: {content: 'Gently', author: 'Wesley', votes: 1, id: 1} })
+    wrapper = mount(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+
+    let button = wrapper.find(QuoteCard).findWhere(n => n.html() === '<button type="button" class="btn btn-secondary">Downvote</button>')
+    
+    button.simulate('click')
+    expect(store.getState().quotes.length).to.equal(1);
+    expect(store.getState().quotes[0].votes).to.be.oneOf([0,'0']);
+  })
+})
