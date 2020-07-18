@@ -82,3 +82,4 @@ import uuid from 'uuid';
 const id = uuid();
 console.log(id) // '1fd3234'
 ```
+
