@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 
 import store from "../store";
-import QuoteForm from "../../src/components/QuoteForm";
+import QuoteForm from "../features/quotes/QuoteForm";
 
 configure({ adapter: new Adapter() });
 
@@ -102,7 +102,7 @@ describe("QuoteForm Component", () => {
   });
 
   it("should modify the store on handleOnSubmit", () => {
-    expect(store.getState().quotes.length).to.equal(0);
+    const quotesLength = store.getState().quotes.length;
 
     wrapper
       .find('input[name="author"]')
@@ -120,8 +120,12 @@ describe("QuoteForm Component", () => {
 
     wrapper.find("form").simulate("submit", { preventDefault() {} });
 
-    expect(store.getState().quotes.length).to.equal(1);
-    expect(store.getState().quotes[0].author).to.equal("test author");
-    expect(store.getState().quotes[0].content).to.equal("test content");
+    expect(store.getState().quotes.length).to.equal(quotesLength + 1);
+    expect(store.getState().quotes[quotesLength - 1].author).to.equal(
+      "test author"
+    );
+    expect(store.getState().quotes[quotesLength - 1].content).to.equal(
+      "test content"
+    );
   });
 });

@@ -1,16 +1,19 @@
 import React from "react";
 import { configure, mount } from "enzyme";
 import { expect } from "chai";
+import { createStore } from "redux";
 import { Provider } from "react-redux";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 
-import store from "../store";
+import rootReducer from "../reducer";
 import QuoteCard from "../features/quotes/QuoteCard";
 
 configure({ adapter: new Adapter() });
 
-describe("QuoteCard Component", () => {
+describe("QuoteCard props", () => {
+  let store;
   let wrapper;
+  let wrapperTwo;
 
   let quoteOne = {
     content: "test quote",
@@ -26,71 +29,69 @@ describe("QuoteCard Component", () => {
   };
 
   beforeEach(() => {
+    store = createStore(rootReducer);
     wrapper = mount(
       <Provider store={store}>
-        <QuoteCard />
+        <QuoteCard quote={quoteOne} />
+        );
+      </Provider>
+    );
+    wrapperTwo = mount(
+      <Provider store={store}>
+        <QuoteCard quote={quoteTwo} />
+        );
       </Provider>
     );
   });
 
   it("renders quote content from props.quote", () => {
-    let quoteOneWrapper = mount(<QuoteCard quote={quoteOne} />);
-    expect(quoteOneWrapper.html()).to.include("test quote");
+    expect(wrapper.html()).to.include("test quote");
 
-    let quoteTwoWrapper = mount(<QuoteCard quote={quoteTwo} />);
-    expect(quoteTwoWrapper.html()).to.include("testing this quote");
+    expect(wrapperTwo.html()).to.include("testing this quote");
   });
 
   it("renders quote author from props.quote", () => {
-    let quoteOneWrapper = mount(<QuoteCard quote={quoteOne} />);
-    expect(quoteOneWrapper.html()).to.include("test author");
+    expect(wrapper.html()).to.include("test author");
 
-    let quoteTwoWrapper = mount(<QuoteCard quote={quoteTwo} />);
-    expect(quoteTwoWrapper.html()).to.include("authoring this test");
+    expect(wrapperTwo.html()).to.include("authoring this test");
   });
 
   it("renders quote votes from props.quote", () => {
-    let quoteOneWrapper = mount(<QuoteCard quote={quoteOne} />);
-    expect(quoteOneWrapper.html()).to.include("0");
+    expect(wrapper.html()).to.include("Votes: 0");
 
-    let quoteTwoWrapper = mount(<QuoteCard quote={quoteTwo} />);
-    expect(quoteTwoWrapper.html()).to.include("10");
+    expect(wrapperTwo.html()).to.include("Votes: 10");
+  });
+});
+
+describe("QuoteCard events", () => {
+  let store;
+  let wrapper;
+  let quote = { content: "As you wish", author: "Wesley", votes: 999, id: 1 };
+
+  beforeEach(() => {
+    store = createStore(rootReducer);
+
+    store.dispatch({ type: "quotes/add", payload: quote });
+    wrapper = mount(
+      <Provider store={store}>
+        <QuoteCard quote={quote} />
+      </Provider>
+    );
   });
 
   it("calls upvoteQuote action creator and updates the quote's vote count in the Redux store", () => {
-    store.dispatch({
-      type: "quotes/add",
-      payload: { content: "As you wish", author: "Wesley", votes: 999, id: 1 },
-    });
-
-    let button = wrapper
-      .find(QuoteCard)
-      .findWhere(
-        (n) =>
-          n.html() ===
-          '<button type="button" class="btn btn-primary">Upvote</button>'
-      );
+    expect(wrapper.html()).to.include("Votes: 999");
+    let button = wrapper.find(".btn-primary");
     button.simulate("click");
     expect(store.getState().quotes.length).to.equal(1);
     expect(store.getState().quotes[0].votes).to.be.oneOf([1000, "1000"]);
   });
 
   it("calls downvoteQuote action creator and updates the quote's vote count in the Redux store", () => {
-    store.dispatch({
-      type: "quotes/add",
-      payload: { content: "Gently", author: "Wesley", votes: 1, id: 1 },
-    });
-
-    let button = wrapper
-      .find(QuoteCard)
-      .findWhere(
-        (n) =>
-          n.html() ===
-          '<button type="button" class="btn btn-secondary">Downvote</button>'
-      );
-
+    expect(wrapper.html()).to.include("Votes: 999");
+    let button = wrapper.find(".btn-secondary");
     button.simulate("click");
     expect(store.getState().quotes.length).to.equal(1);
-    expect(store.getState().quotes[0].votes).to.be.oneOf([0, "0"]);
+    expect(store.getState().quotes[0].votes).to.be.oneOf([998, "998"]);
   });
 });
