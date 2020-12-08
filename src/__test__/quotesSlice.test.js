@@ -123,7 +123,7 @@ describe("Quotes Reducer", () => {
     expect(
       reducer(initialState, {
         type: "quotes/upvote",
-        quoteId: firstId,
+        payload: firstId,
       })
     ).to.deep.equal([
       {

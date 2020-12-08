@@ -38,6 +38,9 @@ We will also need to extend out the `quotesReducer` to handle removing quotes,
 upvoting quotes, and downvoting quotes as well. Check out the test specs for how
 to build these.
 
+If you need help updating state in your reducer without mutating state, check
+out the [Redux docs][redux immutable updates] for some helpful patterns.
+
 ### Quotes Actions
 
 Build out several actions as specified in the tests that build Action Creators
@@ -82,3 +85,9 @@ import { v4 as uuid } from "uuid";
 const id = uuid();
 console.log(id); // '1fd3234'
 ```
+
+## Resources
+
+- [Immutable Update Patterns][redux immutable updates]
+
+[redux immutable updates]: https://redux.js.org/recipes/structuring-reducers/immutable-update-patterns
