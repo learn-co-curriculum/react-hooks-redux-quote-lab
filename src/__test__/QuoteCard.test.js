@@ -33,13 +33,11 @@ describe("QuoteCard props", () => {
     wrapper = mount(
       <Provider store={store}>
         <QuoteCard quote={quoteOne} />
-        );
       </Provider>
     );
     wrapperTwo = mount(
       <Provider store={store}>
         <QuoteCard quote={quoteTwo} />
-        );
       </Provider>
     );
   });
