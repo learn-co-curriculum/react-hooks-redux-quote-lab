@@ -1,48 +1,33 @@
+import "@testing-library/jest-dom";
 import React from "react";
-import { configure, mount } from "enzyme";
-import { expect } from "chai";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 
 import store from "../store";
 import App from "../App";
-import Quotes from "../features/quotes/Quotes";
-import QuoteForm from "../features/quotes/QuoteForm";
 
-configure({ adapter: new Adapter() });
+beforeEach(() => {
+  render(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+});
 
-describe("App Component", () => {
-  let wrapper;
+test('renders an h1 tag with "Quote Maker"', () => {
+  const header = screen.queryByText(/Quote Maker/g);
 
-  beforeEach(() => {
-    wrapper = mount(
-      <Provider store={store}>
-        <App />
-      </Provider>
-    );
-  });
+  expect(header).toBeInTheDocument();
+  expect(header.tagName).toBe("H1");
+});
 
-  it('always renders an h1 tag with "Quote Maker"', () => {
-    const headerTags = wrapper.find("h1");
+test("renders a `QuoteForm` component", () => {
+  expect(screen.queryByText(/Add/)).toBeInTheDocument();
+});
 
-    expect(headerTags.length).to.equal(1);
-    expect(headerTags.text()).to.equal(
-      "Quote Maker",
-      "H1 Tag text does not match"
-    );
-  });
+test("renders a `Quotes` components", () => {
+  const h2 = screen.queryByText(/Quotes/g);
 
-  it("always renders a `QuoteForm` component", () => {
-    expect(wrapper.find(QuoteForm).length).to.equal(
-      1,
-      "Missing a QuoteForm Component"
-    );
-  });
-
-  it("always renders a `Quotes` components", () => {
-    expect(wrapper.find(Quotes).length).to.equal(
-      1,
-      "Missing a Quotes Component"
-    );
-  });
+  expect(h2).toBeInTheDocument();
+  expect(h2.tagName).toBe("H2");
 });

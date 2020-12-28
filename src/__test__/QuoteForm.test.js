@@ -1,131 +1,102 @@
+import "@testing-library/jest-dom";
 import React from "react";
-import { mount, configure } from "enzyme";
-import chai, { expect } from "chai";
-import spies from "chai-spies";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
-
 import store from "../store";
 import QuoteForm from "../features/quotes/QuoteForm";
 
-configure({ adapter: new Adapter() });
+beforeEach(() => {
+  render(
+    <Provider store={store}>
+      <QuoteForm />
+    </Provider>
+  );
+});
 
-describe("QuoteForm Component", () => {
-  let wrapper;
-  chai.use(spies);
+test('renders a textarea[name="content"] tag for quote content', () => {
+  const input = screen.queryByLabelText(/Quote/);
 
-  beforeEach(() => {
-    wrapper = mount(
-      <Provider store={store}>
-        <QuoteForm />
-      </Provider>
-    );
+  expect(input).toBeInTheDocument();
+  expect(input.tagName).toBe("TEXTAREA");
+  expect(input.name).toBe("content");
+});
+
+test('renders a input[name="author"] tag for quote author', () => {
+  const input = screen.queryByLabelText(/Author/);
+
+  expect(input).toBeInTheDocument();
+  expect(input.tagName).toBe("INPUT");
+  expect(input.name).toBe("author");
+});
+
+test("controls its inputs based on internal state", () => {
+  const authorInput = screen.queryByLabelText(/Author/);
+  const contentInput = screen.queryByLabelText(/Quote/);
+
+  fireEvent.change(authorInput, {
+    target: { name: "author", value: "test author" },
+  });
+  fireEvent.change(contentInput, {
+    target: { name: "content", value: "test content" },
   });
 
-  it("always renders a form tag", () => {
-    const form = wrapper.find("form");
+  expect(authorInput.value).toBe("test author");
+  expect(contentInput.value).toBe("test content");
+});
 
-    expect(form.length).to.equal(1, "QuoteForm must contain a <form> tag");
+test("handles the form submit and calls preventDefault()", () => {
+  fireEvent.change(screen.queryByLabelText(/Author/), {
+    target: { name: "author", value: "test author" },
+  });
+  fireEvent.change(screen.queryByLabelText(/Quote/), {
+    target: { name: "content", value: "test content" },
   });
 
-  it('always renders a textarea[name="content"] tag for quote content', () => {
-    const input = wrapper.find('textarea[name="content"]');
+  const isPrevented = fireEvent.submit(screen.queryByText(/Add/));
 
-    expect(input.length).to.equal(
-      1,
-      'QuoteForm must contain one <textarea name="content" /> tag'
-    );
+  expect(isPrevented).toBe(false);
+});
+
+test("resets state after form submit", () => {
+  const authorInput = screen.queryByLabelText(/Author/);
+  const contentInput = screen.queryByLabelText(/Quote/);
+
+  fireEvent.change(authorInput, {
+    target: { name: "author", value: "test author" },
+  });
+  fireEvent.change(contentInput, {
+    target: { name: "content", value: "test content" },
   });
 
-  it('always renders a input[name="author"] tag for quote author', () => {
-    const input = wrapper.find('input[name="author"]');
+  const isPrevented = fireEvent.submit(screen.queryByText(/Add/));
 
-    expect(input.length).to.equal(
-      1,
-      'QuoteForm must contain one <input name="author" /> tag'
-    );
+  expect(isPrevented).toBe(false);
+
+  expect(authorInput.value).toBe("");
+  expect(contentInput.value).toBe("");
+});
+
+test("adds a new quote to the store on submit", () => {
+  const quotesLength = store.getState().quotes.length;
+
+  const authorInput = screen.queryByLabelText(/Author/);
+  const contentInput = screen.queryByLabelText(/Quote/);
+
+  fireEvent.change(authorInput, {
+    target: { name: "author", value: "test author" },
+  });
+  fireEvent.change(contentInput, {
+    target: { name: "content", value: "test content" },
   });
 
-  it("should control its inputs based on internal state", () => {
-    wrapper
-      .find('input[name="author"]')
-      .simulate("change", { target: { name: "author", value: "test author" } });
-    wrapper.find('textarea[name="content"]').simulate("change", {
-      target: { name: "content", value: "test content" },
-    });
+  expect(authorInput.value).toBe("test author");
+  expect(contentInput.value).toBe("test content");
 
-    expect(wrapper.find('input[name="author"]').html()).to.include(
-      'value="test author"'
-    );
-    expect(wrapper.find('textarea[name="content"]').html()).to.include(
-      "test content"
-    );
-  });
+  fireEvent.submit(screen.queryByText(/Add/));
 
-  it("should handleSubmit and preventDefault()", () => {
-    const preventDefault = chai.spy(function () {});
-
-    wrapper
-      .find('input[name="author"]')
-      .simulate("change", { target: { name: "author", value: "test author" } });
-    wrapper.find('textarea[name="content"]').simulate("change", {
-      target: { name: "content", value: "test content" },
-    });
-    wrapper.find("form").simulate("submit", { preventDefault });
-
-    expect(preventDefault).to.have.been.called();
-  });
-
-  it("should reset state after form handleSubmit", () => {
-    const preventDefault = chai.spy(function () {});
-
-    wrapper
-      .find('input[name="author"]')
-      .simulate("change", { target: { name: "author", value: "test author" } });
-    wrapper.find('textarea[name="content"]').simulate("change", {
-      target: { name: "content", value: "test content" },
-    });
-
-    expect(wrapper.find('input[name="author"]').html()).to.include(
-      'value="test author"'
-    );
-    expect(wrapper.find('textarea[name="content"]').html()).to.include(
-      "test content"
-    );
-
-    wrapper.find("form").simulate("submit", { preventDefault });
-
-    expect(wrapper.find('input[name="author"]').html()).to.include('value=""');
-    expect(wrapper.find('textarea[name="content"]').html()).to.not.include(
-      "test content"
-    );
-  });
-
-  it("should modify the store on handleOnSubmit", () => {
-    const quotesLength = store.getState().quotes.length;
-
-    wrapper
-      .find('input[name="author"]')
-      .simulate("change", { target: { name: "author", value: "test author" } });
-    wrapper.find('textarea[name="content"]').simulate("change", {
-      target: { name: "content", value: "test content" },
-    });
-
-    expect(wrapper.find('input[name="author"]').html()).to.include(
-      'value="test author"'
-    );
-    expect(wrapper.find('textarea[name="content"]').html()).to.include(
-      "test content"
-    );
-
-    wrapper.find("form").simulate("submit", { preventDefault() {} });
-
-    expect(store.getState().quotes.length).to.equal(quotesLength + 1);
-    expect(store.getState().quotes[quotesLength - 1].author).to.equal(
-      "test author"
-    );
-    expect(store.getState().quotes[quotesLength - 1].content).to.equal(
-      "test content"
-    );
-  });
+  expect(store.getState().quotes.length).toBe(quotesLength + 1);
+  expect(store.getState().quotes[quotesLength - 1].author).toBe("test author");
+  expect(store.getState().quotes[quotesLength - 1].content).toBe(
+    "test content"
+  );
 });

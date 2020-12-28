@@ -33,6 +33,7 @@ function QuoteForm() {
                   <div className="col-md-5">
                     <textarea
                       className="form-control"
+                      id="content"
                       value={formData.content}
                     />
                   </div>
@@ -45,6 +46,7 @@ function QuoteForm() {
                     <input
                       className="form-control"
                       type="text"
+                      id="author"
                       value={formData.author}
                     />
                   </div>
