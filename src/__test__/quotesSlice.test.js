@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import { v4 as uuid } from "uuid";
 
 import reducer, {
@@ -10,7 +9,7 @@ import reducer, {
 
 describe("Action Creators", () => {
   describe("addQuote(quote: {})", () => {
-    it('should return an Object with a type of "quotes/add" and a quote object as a payload', () => {
+    test('returns an Object with a type of "quotes/add" and a quote object as a payload', () => {
       const quote = {
         content: "test quote",
         author: "test author",
@@ -18,7 +17,7 @@ describe("Action Creators", () => {
         id: uuid(),
       };
 
-      expect(addQuote(quote)).to.deep.equal({
+      expect(addQuote(quote)).toEqual({
         type: "quotes/add",
         payload: quote,
       });
@@ -26,8 +25,8 @@ describe("Action Creators", () => {
   });
 
   describe("removeQuote(quoteId: Integer)", () => {
-    it('should return an Object with a type of "quotes/remove" and a payload of a quoteId', () => {
-      expect(removeQuote(10)).to.deep.equal({
+    test('returns an Object with a type of "quotes/remove" and a payload of a quoteId', () => {
+      expect(removeQuote(10)).toEqual({
         type: "quotes/remove",
         payload: 10,
       });
@@ -35,8 +34,8 @@ describe("Action Creators", () => {
   });
 
   describe("upvoteQuote(quoteId: Integer)", () => {
-    it('should return an Object with a type of "quotes/upvote" and a payload of a quoteId', () => {
-      expect(upvoteQuote(10)).to.deep.equal({
+    test('returns an Object with a type of "quotes/upvote" and a payload of a quoteId', () => {
+      expect(upvoteQuote(10)).toEqual({
         type: "quotes/upvote",
         payload: 10,
       });
@@ -44,8 +43,8 @@ describe("Action Creators", () => {
   });
 
   describe("downvoteQuote(quoteId: Integer)", () => {
-    it('should return an Object with a type of "quotes/downvote" and a payload of a quoteId', () => {
-      expect(downvoteQuote(10)).to.deep.equal({
+    test('returns an Object with a type of "quotes/downvote" and a payload of a quoteId', () => {
+      expect(downvoteQuote(10)).toEqual({
         type: "quotes/downvote",
         payload: 10,
       });
@@ -54,11 +53,11 @@ describe("Action Creators", () => {
 });
 
 describe("Quotes Reducer", () => {
-  it("should return the initial state", () => {
-    expect(reducer(undefined, {})).to.deep.equal([]);
+  test("returns the initial state", () => {
+    expect(reducer(undefined, {})).toEqual([]);
   });
 
-  it("should handle 'quotes/add'", () => {
+  test("should handle 'quotes/add'", () => {
     const quote = {
       id: uuid(),
       content: "Moral indignation is jealousy with a halo.",
@@ -71,10 +70,10 @@ describe("Quotes Reducer", () => {
         type: "quotes/add",
         payload: quote,
       })
-    ).to.deep.equal([quote]);
+    ).toEqual([quote]);
   });
 
-  it("should handle 'quotes/remove'", () => {
+  test("should handle 'quotes/remove'", () => {
     const firstId = uuid();
     const secondId = uuid();
     const initialState = [
@@ -98,7 +97,7 @@ describe("Quotes Reducer", () => {
         type: "quotes/remove",
         payload: firstId,
       })
-    ).to.deep.equal([
+    ).toEqual([
       {
         id: secondId,
         content:
@@ -109,7 +108,7 @@ describe("Quotes Reducer", () => {
     ]);
   });
 
-  it("should handle 'quotes/upvote'", () => {
+  test("should handle 'quotes/upvote'", () => {
     const firstId = uuid();
     const initialState = [
       {
@@ -125,7 +124,7 @@ describe("Quotes Reducer", () => {
         type: "quotes/upvote",
         payload: firstId,
       })
-    ).to.deep.equal([
+    ).toEqual([
       {
         id: firstId,
         content: "Moral indignation is jealousy with a halo.",
@@ -135,7 +134,7 @@ describe("Quotes Reducer", () => {
     ]);
   });
 
-  it("should handle 'quotes/downvote' and decrement vote count down 1 if vote count is positive", () => {
+  test("should handle 'quotes/downvote' and decrement vote count down 1 if vote count is positive", () => {
     const firstId = uuid();
     const initialState = [
       {
@@ -151,7 +150,7 @@ describe("Quotes Reducer", () => {
         type: "quotes/downvote",
         payload: firstId,
       })
-    ).to.deep.equal([
+    ).toEqual([
       {
         id: firstId,
         content: "Moral indignation is jealousy with a halo.",
@@ -161,7 +160,7 @@ describe("Quotes Reducer", () => {
     ]);
   });
 
-  it("should handle quotes/downvote and do nothing if vote count is 0", () => {
+  test("should handle quotes/downvote and do nothing if vote count is 0", () => {
     const firstId = uuid();
     const initialState = [
       {
@@ -177,7 +176,7 @@ describe("Quotes Reducer", () => {
         type: "quotes/downvote",
         payload: firstId,
       })
-    ).to.deep.equal([
+    ).toEqual([
       {
         id: firstId,
         content: "Moral indignation is jealousy with a halo.",

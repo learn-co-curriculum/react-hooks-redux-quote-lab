@@ -48,6 +48,7 @@ function QuoteForm() {
                     <textarea
                       className="form-control"
                       name="content"
+                      id="content"
                       value={formData.content}
                       onChange={handleChange}
                     />
@@ -62,6 +63,7 @@ function QuoteForm() {
                       className="form-control"
                       type="text"
                       name="author"
+                      id="author"
                       value={formData.author}
                       onChange={handleChange}
                     />
