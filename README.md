@@ -1,9 +1,9 @@
 # Redux Put It Together
 
-## Objectives
+## Learning Goals
 
-- Use the `react-redux` library and the redux library to build an application
-  with multiple resources.
+- Use the `react-redux` library and the `redux` library to build an application
+  with multiple resources
 
 ## Overview
 
